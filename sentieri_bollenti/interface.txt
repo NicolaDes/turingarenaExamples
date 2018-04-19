@@ -1,0 +1,31 @@
+function minimize(int N, int M, int A, int B, int[] from, int[] to) -> int;
+
+main {
+    var int N;
+    var int M;
+    var int A;
+    var int B;
+
+    var int ans;
+
+    read N;
+    read M;
+    read A;
+    read B;
+
+    var int[] from;
+    var int[] to;
+    alloc from,to : M;
+    for(s : A)
+    {
+        read from[s];
+        read to[s];
+    }
+    for(s : B)
+    {
+        read from[s];
+        read to[s];
+    }
+    call minimize(N,M,A,B,from,to) -> ans;
+    write ans;
+}
