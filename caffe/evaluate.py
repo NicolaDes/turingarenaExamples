@@ -1,9 +1,13 @@
 import random
 
-def evaluate(algorithm):
+from turingarena import *
 
+all_passed = True
+
+def evaluate(algorithm):
+    i = 10
     for _ in range(1, 10):
-        N = random.randint(2, 50)
+        N = random.randint(2, i)
         A = [
             random.randint(0, N-1)
             for _ in range(0, N)
@@ -13,17 +17,17 @@ def evaluate(algorithm):
             for _ in range(0, N)
         ]
         ret = compute(algorithm, N, A, B)
-        if ret == solve(N, A, B):
-            print("correct!")
+        correct = solve(N,A,B)
+        if ret == correct:
+            print(f"size: {i} -- > (correct)")
         else:
-            print("WRONG!")
+            print(f"size: {i} -- > {ret}!={correct}(wrong)")
+            all_passed = False
+        i = i + 20
     
 
 def compute(algorithm, N, A, B):
     with algorithm.run() as process:
-        memory_usage = process.sandbox.get_info().memory_usage
-        memory_usage = (memory_usage/1024)/1024
-        print(f"memory usage: {memory_usage} MB")
         return process.call.pausa(N, A, B)
 
 
@@ -45,3 +49,10 @@ def solve(N, A, B):
         else:
             c = c-1
     return caffe
+
+
+algorithm = submitted_algorithm()
+
+
+evaluate(algorithm)
+

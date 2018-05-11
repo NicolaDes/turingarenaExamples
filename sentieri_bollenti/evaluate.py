@@ -1,12 +1,15 @@
 import random
 from collections import defaultdict
 from heapq import *
+from turingarena import *
 
+all_passed = True
+i = 10
 def evaluate(algorithm):
-    for _ in range(1, 10):
+    for _ in range(1, i):
         N = random.randint(5, 100)
         A = random.randint(1, 9)
-        B = random.randint(A, 10)
+        B = random.randint(A, i)
         M = A+B
 
         # Graph generation
@@ -24,21 +27,20 @@ def evaluate(algorithm):
         da[M-1] = 1
         a[M-1] = N
 
-    slave = compute(algorithm, N, M, A, B, da, a)
-    master = solve(N, M, A, B, da, a)
+    try:
+        with algorithm.run() as process:
+            sp_ = process.call.minimize(N, M, A, B, da, a)
+    except AlgorithmError as e:
+        print(f"{a} + {b} --> {e}")
+        all_passed = False
 
-    if master == slave:
-        print("Correct!")
+    sp = solve(N, M, A, B, da, a)
+
+    if sp == sp_:
+        print(f"da: {1} a: {N} -- > (correct)")
     else:
-        print("WRONG!")
-
-def compute(algorithm, N, M, A, B, da, a):
-    with algorithm.run() as process:
-        memory_usage = process.sandbox.get_info().memory_usage
-        memory_usage = (memory_usage/1024)/1024
-        # print(f"memory usage: {memory_usage} MB")
-        return process.call.minimize(N, M, A, B, da, a)
-
+        print(f"da: {1} a: {N} -- > {sp}!={sp_} (wrong)")
+        all_passed = False
 
 def solve(N, M, A, B, da, a):
     edges = [None]*(A+B)
@@ -62,7 +64,6 @@ def dijkstra(edges, f, t):
             seen.add(v1)
             path = (v1, path)
             if v1 == t:
-                print (cost, path)
                 return cost  # (cost, path)
 
             for c, v2 in g.get(v1, ()):
@@ -70,3 +71,8 @@ def dijkstra(edges, f, t):
                     heappush(q, (cost+c, v2, path))
 
     return float("inf")
+
+
+algorithm = submitted_algorithm()
+
+evaluate(algorithm)
