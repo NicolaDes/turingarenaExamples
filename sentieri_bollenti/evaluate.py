@@ -1,46 +1,48 @@
 import random
 from collections import defaultdict
 from heapq import *
+import networkx as nx
 from turingarena import *
 
 all_passed = True
 i = 10
 def evaluate(algorithm):
-    for _ in range(1, i):
-        N = random.randint(5, 100)
-        A = random.randint(1, 9)
-        B = random.randint(A, i)
-        M = A+B
+    for i in range(10,100,10):
+        for _ in range(1, i):
+            N = random.randint(1, i)
+            A = random.randint(1, i-1)
+            B = random.randint(A, i)
+            M = A+B
 
-        # Graph generation
-        da = [
-            random.randint(1, N)
-            for _ in range(0, M)
-        ]
-        a = [
-            random.randint(1, N)
-            for _ in range(0, M)
-        ]
+            # Graph generation
+            da = [
+                random.randint(1, N)
+                for _ in range(0, M)
+            ]
+            a = [
+                random.randint(1, N)
+                for _ in range(0, M)
+            ]
 
-    # No sp from 1 to N, put it an hot one!
-    if solve(N, M, A, B, da, a) == float("inf"):
-        da[M-1] = 1
-        a[M-1] = N
+        # No sp from 1 to N, put it an hot one!
+        if solve(N, M, A, B, da, a) == float("inf"):
+            da[M-1] = 1
+            a[M-1] = N
 
-    try:
-        with algorithm.run() as process:
-            sp_ = process.call.minimize(N, M, A, B, da, a)
-    except AlgorithmError as e:
-        print(f"{a} + {b} --> {e}")
-        all_passed = False
+        try:
+            with algorithm.run() as process:
+                sp_ = process.call.minimize(N, M, A, B, da, a)
+        except AlgorithmError as e:
+            print(f"{a} + {b} --> {e}")
+            all_passed = False
 
-    sp = solve(N, M, A, B, da, a)
+        sp = solve(N, M, A, B, da, a)
 
-    if sp == sp_:
-        print(f"da: {1} a: {N} -- > (correct)")
-    else:
-        print(f"da: {1} a: {N} -- > {sp}!={sp_} (wrong)")
-        all_passed = False
+        if sp == sp_:
+            print(f"da: {1} a: {N} -- > (correct)")
+        else:
+            print(f"da: {1} a: {N} -- > {sp}!={sp_} (wrong)")
+            all_passed = False
 
 def solve(N, M, A, B, da, a):
     edges = [None]*(A+B)

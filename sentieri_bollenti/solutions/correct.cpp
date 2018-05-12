@@ -5,14 +5,14 @@
 using namespace std;
 
 int A,B,N;
-vector<pair<int,int64_t> > L[100000];
+vector<pair<int,int> > L[100000];
 
-int64_t D[1000000];
+int D[1000000];
 
 class compare
 {
     public:
-    bool operator()(pair<int,int64_t> a,pair<int,int64_t> b)const{return a.second>b.second;}
+    bool operator()(pair<int,int> a,pair<int,int> b)const{return a.second>b.second;}
 };
 
 int minimize(int N, int M, int A, int B, int from[], int to[])
@@ -40,12 +40,12 @@ int minimize(int N, int M, int A, int B, int from[], int to[])
         D[i] = -1; //Dijkstra vector
     }
     
-    priority_queue<pair<int, int64_t>, vector<pair<int, int64_t> >,compare> q;
+    priority_queue<pair<int, int>, vector<pair<int, int> >,compare> q;
     q.push(make_pair(s,0));
     
     while(q.size()>0)
     {
-        pair<int,int64_t> n=q.top();q.pop();
+        pair<int,int> n=q.top();q.pop();
         
         if(D[n.first] >= 0) continue;
         D[n.first]=n.second;
