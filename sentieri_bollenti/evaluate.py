@@ -59,18 +59,18 @@ def dijkstra(edges, f, t):
         g[l].append((c, r))
         g[r].append((c, l))  # undirected graph
 
-    q, seen = [(0, f, ())], set()
+    q, seen = [], set()
+    q.append((0,f))
     while q:
-        (cost, v1, path) = heappop(q)
+        (cost, v1) = heappop(q)
         if v1 not in seen:
             seen.add(v1)
-            path = (v1, path)
             if v1 == t:
-                return cost  # (cost, path)
+                return cost
 
             for c, v2 in g.get(v1, ()):
                 if v2 not in seen:
-                    heappush(q, (cost+c, v2, path))
+                    heappush(q, (cost+c, v2))
 
     return float("inf")
 
