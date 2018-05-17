@@ -1,0 +1,32 @@
+function pedala(int N, int M, int[] H, int[] da, int[] a) -> int;
+
+main {
+    var int N;
+    var int M;
+    var int[] H;
+    var int[] da;
+    var int[] a;
+
+    var int ans;
+
+    read N;
+    read M;
+
+    alloc da, a : M;
+    alloc H : N;
+
+    for(n : N)
+    {
+        read H[n];
+    }
+    
+    for(e : M)
+    {
+        read da[e];
+        read a[e];
+    }
+
+    call pedala(N,M,H,da,a) -> ans;
+
+    write ans;
+}
