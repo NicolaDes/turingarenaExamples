@@ -30,12 +30,12 @@ void dfs(int curr, int H[], int last)
         }
     }
 
-    if (next == -1)
+    if (next == -1) /// Devo fare inversione a U
     {
         last_position = curr;
         return;
     }
-    last_position = next;
+    last_position = next; /// se non devo fare inversione a U allora o posso andare avanti o sono in un incrocio già passato
     if (!visited[next])
         dfs(next, H, curr);
 }

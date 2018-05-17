@@ -11,7 +11,7 @@
 std::vector<int> adj[MAXN + 1];
 bool visited[MAXN + 1];
 
-void bfs(int src, int distance[])
+void bfs(int src, int distance[]) /// BFS classica
 {
     std::list<int> Q;
     Q.push_back(src);
@@ -53,9 +53,9 @@ int compra(int N, int M, int K, int supermercati[], int da[], int a[])
     }
 
     memset(visited, false, MAXN);
-    bfs(1, distanceSource);
+    bfs(1, distanceSource); ///calcola la distanza dei supermercati in andata
     memset(visited, false, MAXN);
-    bfs(N, distanceTarget);
+    bfs(N, distanceTarget); ///calcola la distanza dei supermercati in ritorno
 
     for (int i = 0; i < K; ++i)
     {
