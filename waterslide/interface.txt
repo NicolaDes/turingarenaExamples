@@ -1,0 +1,28 @@
+function find_pool(int N, int M, int P, int[] A, int[] B) -> int;
+
+main {
+    var int N;
+    var int M;
+    var int P;
+    var int[] A;
+    var int[] B;
+
+    var int ans;
+
+    read N;
+    read M;
+    read P;
+
+    alloc A : M;
+    alloc B : M;
+    
+    for(e : M)
+    {
+        read A[e];
+        read B[e];
+    }
+
+    call find_pool(N,M,P,A,B) -> ans;
+
+    write ans;
+}

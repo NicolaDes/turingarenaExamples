@@ -1,0 +1,21 @@
+function coppie(int N, int[] C) -> int;
+
+main {
+    var int N;
+    var int []C;
+
+    var int ans;
+
+    read N;
+
+    alloc C : N;
+
+    for(i : N)
+    {
+        read C[i];
+    }
+
+    call coppie(N,C) -> ans;
+
+    write ans;
+}
