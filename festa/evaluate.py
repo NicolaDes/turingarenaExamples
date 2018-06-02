@@ -1,42 +1,97 @@
+import random
 import collections
 from collections import defaultdict
-import itertools
+import networkx as nx
 
 from turingarena import *
 
-all_passed = True
+Task = [True]*4
+
 
 def evaluate(algorithm):
-    for i in range(100, 2000,100):
-        N = random.randint(5, i)
-        M = random.randint(1, N)
 
-        nodes = [
-            _
-            for _ in range(0, N)
-        ]
+    # Task 2
 
-        pairs = list(itertools.combinations(nodes, 2))
+    for i in range(0, 10):
+        N = random.randint(2, 10)
+        M = random.randint(1, N*N)
 
-        random.shuffle(pairs)
+        G = nx.gnm_random_graph(N, M)
 
-        # Graph generation
+        M = len(G.edges())
+
         conoscenzeA = [
             item[0]
-            for item in pairs[:M]
+            for item in G.edges()
         ]
         conoscenzeB = [
             item[1]
-            for item in pairs[:M]
+            for item in G.edges()
         ]
 
         ret = compute(algorithm, N, M, conoscenzeA, conoscenzeB)
         correct = solve(N, M, conoscenzeA, conoscenzeB)
         if ret == correct:
-            print(f"size: {i} -- > (correct)")
+            print(f"Task 2 -- > (correct)")
         else:
-            print(f"size: {i} -- > {ret}!={correct}(wrong)")
-            all_passed = False
+            print(f"Task 2 -- > {ret}!={correct}(wrong)")
+            Task[2] = False
+
+    # Task 3
+
+    for i in range(0, 2):
+        N = random.randint(2, 1000)
+        M = random.randint(1, 100000)
+
+        G = nx.gnm_random_graph(N, M)
+
+        M = len(G.edges())
+
+        conoscenzeA = [
+            item[0]
+            for item in G.edges()
+        ]
+        conoscenzeB = [
+            item[1]
+            for item in G.edges()
+        ]
+
+        ret = compute(algorithm, N, M, conoscenzeA, conoscenzeB)
+        correct = solve(N, M, conoscenzeA, conoscenzeB)
+        if ret == correct:
+            print(f"Task 3 -- > (correct)")
+        else:
+            print(f"Task 3 -- > {ret}!={correct}(wrong)")
+            Task[3] = False
+
+    
+    # Task 4
+    
+    for i in range(0,1):
+        N = random.randint(2,10000)
+        M = random.randint(1,100000)
+
+        G = nx.gnm_random_graph(N,M)
+
+        M = len(G.edges())
+
+        conoscenzeA = [
+            item[0]
+            for item in G.edges()
+        ]
+        conoscenzeB = [
+            item[1]
+            for item in G.edges()
+        ]
+
+        ret = compute(algorithm,N,M,conoscenzeA,conoscenzeB)
+        correct = solve(N,M,conoscenzeA,conoscenzeB)
+        if ret == correct:
+            print(f"Task 4 -- > (correct)")
+        else:
+            print(f"Task 4-- > {ret}!={correct}(wrong)")
+            Task[4]=False
+
 
 
 def compute(algorithm, N, M, conoscenzeA, conoscenzeB):
@@ -45,16 +100,13 @@ def compute(algorithm, N, M, conoscenzeA, conoscenzeB):
 
 
 def solve(N, M, conoscenzeA, conoscenzeB):
-    edges = [None]*M
     degree = [0]*(N)
-    for i in range(0, M):
-        edges[i] = (conoscenzeA[i], conoscenzeB[i])
     g = defaultdict(list)
-    for l, r in edges:
-        g[l].append((r))
-        g[r].append((l))
-        degree[l] = degree[l]+1
-        degree[r] = degree[r]+1
+    for i in range(0, M):
+        g[conoscenzeA[i]].append((conoscenzeB[i]))
+        g[conoscenzeB[i]].append((conoscenzeA[i]))
+        degree[conoscenzeA[i]] = degree[conoscenzeA[i]]+1
+        degree[conoscenzeB[i]] = degree[conoscenzeB[i]]+1
     for i in range(0, N):
         if degree[i] == 1:
             eatBorders(i, degree, g, N)

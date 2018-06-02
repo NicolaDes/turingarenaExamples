@@ -126,14 +126,10 @@ def compute(algorithm, N, M, H, da, a):
 
 
 def solve(N, M, H, da, a):
-    edges = [None]*M
-    for i in range(0, M):
-        edges[i] = (da[i], a[i])
-
     g = defaultdict(list)
-    for l, r in edges:
-        g[l].append((r))
-        g[r].append((l))
+    for i in range(0,M):
+        g[da[i]].append((a[i]))
+        g[a[i]].append((da[i]))
 
     visited = set()
     sol = dfs(0, H, -1, visited, g)

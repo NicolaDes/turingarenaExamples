@@ -1,41 +1,117 @@
 import random
 import collections
 from collections import defaultdict
+import networkx as nx
 
 from turingarena import *
 
-all_passed = True
+Task = [True]*4
 
 
 def evaluate(algorithm):
-    i = 10
-    for _ in range(1, 10):
-        N = random.randint(5, i)
-        M = random.randint(1, i*10)
-        K = random.randint(1, i/2)
 
-        # Graph generation
-        supermercati = [
-            random.randint(1, N)
-            for _ in range(0, K)
+    # Task 2
+
+    for i in range(0, 10):
+        N = random.randint(3, 100)
+        M = random.randint(N-1, N*N)
+        K = random.randint(1, N-2)
+        assert(K >= 1)
+
+        random_list = [
+            i
+            for i in range(0, N)
         ]
+        random.shuffle(random_list)
+        # Graph generation
+        supermercati = random_list[0:K]
+        G = nx.gnm_random_graph(N+1, M)
+
+        M = len(G.edges())
         da = [
-            random.randint(1, N)
-            for _ in range(0, M)
+            item[0]
+            for item in G.edges()
         ]
         a = [
-            random.randint(1, N)
-            for _ in range(0, M)
+            item[1]
+            for item in G.edges()
         ]
 
         ret = compute(algorithm, N, M, K, supermercati, da, a)
         correct = solve(N, M, K, supermercati, da, a)
         if ret == correct:
-            print(f"size: {i} -- > (correct)")
+            print(f"Task 2 -- > (correct)")
         else:
-            print(f"size: {i} -- > {ret}!={correct}(wrong)")
-            all_passed = False
-        i = i + 20
+            print(f"Task 2 -- > {ret}!={correct}(wrong)")
+            Task[2] = False
+    
+    # Task 3
+
+    for i in range(0, 1):
+        N = random.randint(3, 10000)
+        M = random.randint(N-1,100000)
+        K = random.randint(1, 10)
+        assert(K >= 1)
+
+        random_list = [
+            i
+            for i in range(0, N)
+        ]
+        random.shuffle(random_list)
+        # Graph generation
+        supermercati = random_list[0:K]
+        G = nx.gnm_random_graph(N+1, M)
+
+        M = len(G.edges())
+        da = [
+            item[0]
+            for item in G.edges()
+        ]
+        a = [
+            item[1]
+            for item in G.edges()
+        ]
+        ret = compute(algorithm, N, M, K, supermercati, da, a)
+        correct = solve(N, M, K, supermercati, da, a)
+        if ret == correct:
+            print(f"Task 3 -- > (correct)")
+        else:
+            print(f"Task 3 -- > {ret}!={correct}(wrong)")
+            Task[3] = False
+
+    # Task 4
+
+    for i in range(0, 1):
+        N = random.randint(3, 10000)
+        M = random.randint(N-1,100000)
+        K = random.randint(1, N-2)
+        assert(K >= 1)
+
+        random_list = [
+            i
+            for i in range(0, N)
+        ]
+        random.shuffle(random_list)
+        # Graph generation
+        supermercati = random_list[0:K]
+        G = nx.gnm_random_graph(N+1, M)
+
+        M = len(G.edges())
+        da = [
+            item[0]
+            for item in G.edges()
+        ]
+        a = [
+            item[1]
+            for item in G.edges()
+        ]
+        ret = compute(algorithm, N, M, K, supermercati, da, a)
+        correct = solve(N, M, K, supermercati, da, a)
+        if ret == correct:
+            print(f"Task 4 -- > (correct)")
+        else:
+            print(f"Task 4 -- > {ret}!={correct}(wrong)")
+            Task[3] = False
 
 
 def compute(algorithm, N, M, K, supermercati, da, a):
