@@ -8,13 +8,6 @@ Task = [False]*4
 
 
 def generate_unbalanced_tree(source, C, N):
-    remaining = [
-        i
-        for i in range(0, N)
-        if i != source
-    ]
-
-    random.shuffle(remaining)
 
     choosen = set()
     choosen.add(source)

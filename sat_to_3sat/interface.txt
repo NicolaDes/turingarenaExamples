@@ -1,0 +1,15 @@
+function riduci(nC,nL, phi[][]);
+
+main {
+    read nC;
+    read nL;
+
+    for i to nC {
+        for j to nL {
+            read phi[i][j];
+        }
+    }
+
+    call ans = riduci(N,A,B);
+    write ans;
+}

@@ -9,7 +9,7 @@ Task = [False] * 4
 
 
 def generate_random_dag(n, m):
-    random_graph = nx.gnm_random_graph(n, m, directed=True)
+    random_graph = nx.gnm_random_graph(n, m, directed=True) #gnp per probabilità arco 
     random_dag = nx.DiGraph(
         [
             (u, v) for (u, v) in random_graph.edges() if u < v

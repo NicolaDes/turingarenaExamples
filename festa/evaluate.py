@@ -14,7 +14,7 @@ def evaluate(algorithm):
 
     for i in range(0, 10):
         N = random.randint(2, 10)
-        M = random.randint(1, N*N)
+        M = random.randint(1, N*N) #metti 2n anzichè n^2
 
         G = nx.gnm_random_graph(N, M)
 

@@ -22,10 +22,10 @@ def evaluate(algorithm):
             i
             for i in range(0, N)
         ]
-        random.shuffle(random_list)
+        random.shuffle(random_list) # random.sample(range(N),K)
         # Graph generation
         supermercati = random_list[0:K]
-        G = nx.gnm_random_graph(N+1, M)
+        G = nx.gnm_random_graph(N+1, M) #gnp, (unione tra albero e grafo generato networkx)
 
         M = len(G.edges())
         da = [
