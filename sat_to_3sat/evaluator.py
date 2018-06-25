@@ -2,26 +2,33 @@ import core.parser
 import core.reduction
 from turingarena import *
 
+import random
 
-Task = [False]*4
+def main():
 
+    formula_s = [[1, 3, 4, -5],[1, 2], [4], [1, 4, 9, -8, 10]]
 
-def evaluate(algorithm):
-    formula_s = core.parser.read_from_file("input_example/simple_v3_c2.cnf")
     print(formula_s)
     print("now reducing to 3sat problem...")
-    formula_3s = core.reduction.reduce(formula_s,100)
+
+    formula_3s = core.reduction.reduce(formula_s,20)
+
     print(formula_3s)
 
+    for i in range(10):
+        formula = [random.randint(1,100) for _ in range(10)]
+        print(compute(len(formula), formula))
 
 
 
-def compute(algorithm, nC, nL, phi):
-    with algorithm.run() as process:
-        return process.call.riduci(nC, nL, phi)
 
+def compute(literals, formula):
+    with run_algorithm(submission.source) as process:
 
-algorithm = submitted_algorithm()
+        size = process.functions.reduce(literals, formula)
 
+        b = [process.functions.getLiteral(i) for i in range(size)]
+        
+        return b
 
-evaluate(algorithm)
+main()
