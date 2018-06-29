@@ -33,8 +33,9 @@ int reduce(int size, int *clause)
     case 1:
     {
         int u = getUnusedLiteral();
+        taken[u] = true;
         int v = getUnusedLiteral();
-        taken[u] = true, taken[v] = true;
+        taken[v] = true;
         sat3.push_back(clause[0]);
         sat3.push_back(u);
         sat3.push_back(v);

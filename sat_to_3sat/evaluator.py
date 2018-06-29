@@ -16,15 +16,49 @@ def main():
 
     print(formula_3s)
 
+    # n==1
+    print(f"Task n == 1")
+    for i in range(50):
+        formula = [random.randint(1, 100)]
+        correct = core.reduction.reduce([formula], 32767)
+        request = compute(len(formula), formula)
+        if core.reduction.verify([formula], request):
+            print(f"Correct!!")
+        else:
+            print(f"Wrong!! {formula} -> {request} != {correct}")
+
+    # n==2
+    print(f"Task n == 2")
+    for i in range(50):
+        formula = [random.randint(1, 100) for _ in range(2)]
+        correct = core.reduction.reduce([formula], 32767)
+        request = compute(len(formula), formula)
+        if core.reduction.verify([formula], request):
+            print(f"Correct!!")
+        else:
+            print(f"Wrong!! {formula} -> {request} != {correct}")
+
+    # n>3
+    print(f"Task n == 3")
+    for i in range(50):
+        formula = [random.randint(1, 100) for _ in range(3)]
+        correct = core.reduction.reduce([formula], 32767)
+        request = compute(len(formula), formula)
+        if core.reduction.verify([formula], request):
+            print(f"Correct!!")
+        else:
+            print(f"Wrong!! {formula} -> {request} != {correct}")
+
+    # n>3
+    print(f"Task n > 3")
     for i in range(50):
         formula = [random.randint(1, 100) for _ in range(100)]
         correct = core.reduction.reduce([formula], 32767)
         request = compute(len(formula), formula)
-        if  request == correct:
-            print(f"Correct!")
+        if core.reduction.verify([formula], request):
+            print(f"Correct!!")
         else:
-            print(f"Wrong!! -> {request} != {correct}")
-            
+            print(f"Wrong!! {formula} -> {request} != {correct}")
 
 
 def compute(literals, formula):
@@ -36,14 +70,14 @@ def compute(literals, formula):
 
         result = list()
 
-        i=0
+        i = 0
         while i < size:
             c = list()
-            while b[i]!=0:
+            while b[i] != 0:
                 c.append(b[i])
-                i=i+1
+                i = i+1
             result.append(c)
-            i=i+1
+            i = i+1
 
         return result
 
