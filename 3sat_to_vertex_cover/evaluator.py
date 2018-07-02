@@ -4,11 +4,18 @@ from turingarena import *
 
 import random
 
-Tasks = [50]*4
 
 def main():
 
-    print(f"Computing submission...")
+    formula_s = [[1, 3, 4, -5], [1, 2], [4], [1, 4, 9, -8, 10]]
+
+    print(formula_s)
+    print("now reducing to 3sat problem...")
+
+    formula_3s = core.reduction.reduce(formula_s, 20)
+
+    print(formula_3s)
+
     # n==1
     print(f"Task n == 1")
     for i in range(50):
@@ -16,11 +23,9 @@ def main():
         correct = core.reduction.reduce([formula], 32767)
         request = compute(len(formula), formula)
         if core.reduction.verify([formula], request):
-            # print(f"Correct!!")
-            x = 1
+            print(f"Correct!!")
         else:
-            # print(f"Wrong!! {formula} -> {request} != {correct}")
-            Tasks[0]=Tasks[0]-1
+            print(f"Wrong!! {formula} -> {request} != {correct}")
 
     # n==2
     print(f"Task n == 2")
@@ -29,11 +34,9 @@ def main():
         correct = core.reduction.reduce([formula], 32767)
         request = compute(len(formula), formula)
         if core.reduction.verify([formula], request):
-            # print(f"Correct!!")
-            x = 1
+            print(f"Correct!!")
         else:
-            # print(f"Wrong!! {formula} -> {request} != {correct}")
-            Tasks[1]=Tasks[1]-1
+            print(f"Wrong!! {formula} -> {request} != {correct}")
 
     # n>3
     print(f"Task n == 3")
@@ -42,11 +45,9 @@ def main():
         correct = core.reduction.reduce([formula], 32767)
         request = compute(len(formula), formula)
         if core.reduction.verify([formula], request):
-            # print(f"Correct!!")
-            x = 1
+            print(f"Correct!!")
         else:
-            # print(f"Wrong!! {formula} -> {request} != {correct}")
-            Tasks[2]=Tasks[2]-1
+            print(f"Wrong!! {formula} -> {request} != {correct}")
 
     # n>3
     print(f"Task n > 3")
@@ -55,19 +56,10 @@ def main():
         correct = core.reduction.reduce([formula], 32767)
         request = compute(len(formula), formula)
         if core.reduction.verify([formula], request):
-            # print(f"Correct!!")
-            x = 1
+            print(f"Correct!!")
         else:
-            # print(f"Wrong!! {formula} -> {request} != {correct}")
-            Tasks[3]=Tasks[3]-1
+            print(f"Wrong!! {formula} -> {request} != {correct}")
 
-
-    print(f"Results:")
-
-    print(f"Task n == 1: {Tasks[0]}/50")
-    print(f"Task n == 2: {Tasks[1]}/50")
-    print(f"Task n == 3: {Tasks[2]}/50")
-    print(f"Task n  > 3: {Tasks[3]}/50")
 
 def compute(literals, formula):
     with run_algorithm(submission.source) as process:

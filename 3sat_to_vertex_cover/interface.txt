@@ -1,0 +1,30 @@
+// nC = number of clauses
+// nL = number of literals
+// cnf[][] = sat formula
+// cnf3[][] = 3-sat formula (to fill)
+// certificate[][] = 3-sat certificate
+
+procedure reduce(size,clause[]);
+function nV();
+function nE();
+function nV(i);
+function nE(i);
+
+main {
+
+    read literals;
+    for i to literals {
+        read clause[i];
+    }
+
+    call reduce(literals,clause);
+
+    call V = nV();
+    call E = nE();
+
+    for i to E {
+        call e = nE(i);
+        write e;
+    }
+
+}
