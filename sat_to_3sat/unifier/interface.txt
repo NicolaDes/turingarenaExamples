@@ -4,11 +4,8 @@
 // cnf3[][] = 3-sat formula (to fill)
 // certificate[][] = 3-sat certificate
 
-procedure reduce(size,clause[]);
-function nV();
-function nE();
-function nV(i);
-function nE(i);
+function reduce(size,clause[]);
+function getLiteral(i);
 
 main {
 
@@ -17,14 +14,13 @@ main {
         read clause[i];
     }
 
-    call reduce(literals,clause);
+    call size = reduce(literals,clause);
 
-    call V = nV();
-    call E = nE();
+    write size;
 
-    for i to E {
-        call e = nE(i);
-        write e;
+    for i to size {
+        call lit = getLiteral(i);
+        write lit;
     }
 
 }

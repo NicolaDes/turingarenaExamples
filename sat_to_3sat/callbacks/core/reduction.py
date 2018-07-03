@@ -14,6 +14,8 @@ def unify(c1, c2):
     return ret
 
 
+
+
 # Verifica basata sul calcolo della funzione inversa nell'assunzione che la riduzione esegua le operazioni in maniera ordinata!!
 # Cioè se ho (1) -[2]-> (1,2)^(1,-2) -[3]-> (1,2,3)^(1,2,-3)^(1,-2,3)^(1,-2,-3)
 # In questo modo comprimendo nello stesso ordine ritorno alla stessa clausola
@@ -57,6 +59,7 @@ def verify(cnf, cnf_3):
             return False
     elif len(cnf[0]) > 3:
         sat_original = cnf_3
+
         for i in range(len(cnf_3)-1):
             for j in range(i, len(cnf_3)):
                 for x in cnf_3[i]:
