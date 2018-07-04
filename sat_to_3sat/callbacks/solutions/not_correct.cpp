@@ -36,8 +36,7 @@ void reduce(int nL, int *literals, int size, int *clause, void addVariable(int l
         taken[u] = true;
         int v = getUnusedLiteral();
         taken[v] = true;
-        sat3.push_back(clause[0]);
-        sat3.push_back(u);
+        sat3.push_back(clause[1]);
         sat3.push_back(v);
 
         sat3.push_back(0); //separator
@@ -73,7 +72,7 @@ void reduce(int nL, int *literals, int size, int *clause, void addVariable(int l
 
         sat3.push_back(0); //separator
 
-        sat3.push_back(clause[0]);
+        sat3.push_back(clause[1]);
         sat3.push_back(clause[1]);
         sat3.push_back(-u);
 
@@ -84,9 +83,8 @@ void reduce(int nL, int *literals, int size, int *clause, void addVariable(int l
     }
     case 3:
     {
-        sat3.push_back(clause[0]);
         sat3.push_back(clause[1]);
-        sat3.push_back(clause[2]);
+        sat3.push_back(clause[0]);
 
         sat3.push_back(0); //separator
 
@@ -98,7 +96,7 @@ void reduce(int nL, int *literals, int size, int *clause, void addVariable(int l
         int u = getUnusedLiteral();
         taken[u] = true;
 
-        sat3.push_back(clause[0]);
+        sat3.push_back(clause[1]);
         sat3.push_back(clause[1]);
         sat3.push_back(u);
 

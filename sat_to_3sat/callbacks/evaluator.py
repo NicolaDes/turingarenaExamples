@@ -1,93 +1,94 @@
 import core.parser
 import core.reduction
+import core.solver
+import core.generator
 from turingarena import *
 
 import random
 
 Tasks = [50]*4
 
+
 def main():
+    print(f"SAT testing")
+    literals = [_ for _ in range(1, 6)]
+    clauses = 20
+    max_c_size = 10
+    [formula, certificate] = core.generator.generate_formula(
+        len(literals), clauses, max_c_size)
 
-    print(f"Computing submission...")
-    # n==1
-    print(f"Task n == 1")
-    for i in range(50):
-        formula = [random.randint(1, 100)]
-        correct = core.reduction.reduce([formula], 32767)
-        request = compute(len(formula), formula)
-        if core.reduction.verify([formula], request):
-            # print(f"Correct!!")
-            x = 1
-        else:
-            # print(f"Wrong!! {formula} -> {request} != {correct}")
-            Tasks[0]=Tasks[0]-1
+    new_formula = formula.copy()
 
-    # n==2
-    print(f"Task n == 2")
-    for i in range(50):
-        formula = [random.randint(1, 100) for _ in range(2)]
-        correct = core.reduction.reduce([formula], 32767)
-        request = compute(len(formula), formula)
-        if core.reduction.verify([formula], request):
-            # print(f"Correct!!")
-            x = 1
-        else:
-            # print(f"Wrong!! {formula} -> {request} != {correct}")
-            Tasks[1]=Tasks[1]-1
+    for c in formula:
 
-    # n>3
-    print(f"Task n == 3")
-    for i in range(50):
-        formula = [random.randint(1, 100) for _ in range(3)]
-        correct = core.reduction.reduce([formula], 32767)
-        request = compute(len(formula), formula)
-        if core.reduction.verify([formula], request):
-            # print(f"Correct!!")
-            x = 1
-        else:
-            # print(f"Wrong!! {formula} -> {request} != {correct}")
-            Tasks[2]=Tasks[2]-1
+        # test_case = formula[random.randint(0,len(formula)-1)]
+        test_case = c
 
-    # n>3
-    print(f"Task n > 3")
-    for i in range(50):
-        formula = [random.randint(1, 100) for _ in range(100)]
-        correct = core.reduction.reduce([formula], 32767)
-        request = compute(len(formula), formula)
-        if core.reduction.verify([formula], request):
-            # print(f"Correct!!")
-            x = 1
-        else:
-            # print(f"Wrong!! {formula} -> {request} != {correct}")
-            Tasks[3]=Tasks[3]-1
+        request = compute(literals, test_case)
+
+        for x in request:
+            new_formula.append(x)
+
+    req = core.solver.exaustive_search(new_formula)
+    corr = core.solver.exaustive_search(formula)
+    if req == corr:
+        print("Reduction is correct!!")
+    else:
+        print(f"Reduction is not correct, {request} make formula {new_formula} unsat!!")
 
 
-    print(f"Results:")
 
-    print(f"Task n == 1: {Tasks[0]}/50")
-    print(f"Task n == 2: {Tasks[1]}/50")
-    print(f"Task n == 3: {Tasks[2]}/50")
-    print(f"Task n  > 3: {Tasks[3]}/50")
+    print(f"UNSAT testing")
+    pigeonhole_size = 3
+    [formula, certificate] = core.generator.generate_formula(pigeonhole_size, clauses, max_c_size, False)
+
+    literals = set()
+    for c in formula:
+        for x in c:
+            if x not in literals and (-x) not in literals:
+                literals.add(abs(x))
+
+    new_formula = list()
+
+    for c in formula:
+
+        # test_case = formula[random.randint(0,len(formula)-1)]
+        test_case = c
+
+        request = compute(list(literals), test_case)
+
+        for x in request:
+            new_formula.append(x)
+
+    print(new_formula)
+    req = core.solver.exaustive_search(new_formula)
+    corr = core.solver.exaustive_search(formula)
+    if req == corr:
+        print("Reduction is correct!!")
+    else:
+        print(f"Reduction is not correct, {request} make formula {new_formula} unsat!!")
+
 
 def compute(literals, formula):
+    
     with run_algorithm(submission.source) as process:
+        formula_raw = list()
 
-        size = process.functions.reduce(literals, formula)
+        def addVariable(i):
+            formula_raw.append(i)
 
-        b = [process.functions.getLiteral(i) for i in range(size)]
+        process.procedures.reduce(len(literals), literals, len(formula), formula, callbacks=[addVariable])
 
-        result = list()
-
+        formula = list()
         i = 0
-        while i < size:
+        while i < len(formula_raw):
             c = list()
-            while b[i] != 0:
-                c.append(b[i])
+            while formula_raw[i] != 0:
+                c.append(formula_raw[i])
                 i = i+1
-            result.append(c)
+            formula.append(c)
             i = i+1
-
-        return result
+        return formula
 
 
 main()
