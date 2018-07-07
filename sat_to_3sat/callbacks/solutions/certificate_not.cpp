@@ -104,39 +104,5 @@ void reduceClause(int sizeL, int *literals, int sizeC, int *clause, int requestV
 
 void reduceCertificate(int certificateLiteral, void addCertificateVariable(int l))
 {
-
-    switch (certificates.size())
-    {
-    case 1:
-        addCertificateVariable(certificateLiteral);
-        break;
-    case 2:
-        addCertificateVariable(certificateLiteral);
-        break;
-    case 3:
-        addCertificateVariable(certificateLiteral);
-        break;
-
-    default:
-        int i = 3;
-        if (certificates[0] == certificateLiteral || certificates[1] == certificateLiteral)
-            goto found_case;
-        for (; i < certificates.size()-3; i += 3)
-        {
-            addCertificateVariable(certificates[i-1]);
-            if (certificates[i] == certificateLiteral)
-                break;
-        }
-    found_case:;
-        for(;i<certificates.size()-3;i+=3)
-        {
-            addCertificateVariable(certificates[i+1]);
-        }
-
-        if(certificates[i-2]==certificateLiteral || certificates[i-3]==certificateLiteral)
-            addCertificateVariable(certificateLiteral);
-        else
-            addCertificateVariable(certificates[certificates.size()-2]);
-        break;
-    }
+    addCertificateVariable(certificateLiteral);
 }

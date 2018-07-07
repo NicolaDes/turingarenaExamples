@@ -1,5 +1,6 @@
 satisfiable = False
 
+# Verifier of sat formula with certificate
 def isSat(formula, certificate):
     sat = True
     for c in formula:
@@ -11,6 +12,7 @@ def isSat(formula, certificate):
     return sat
 
 
+# Complete search (worst case 2^#variables)
 def search(variables, assignment, formula, certificate):
     global satisfiable
     if len(variables) == 0:
@@ -32,7 +34,7 @@ def search(variables, assignment, formula, certificate):
 # Solve a cnf formula and fill a certificate list with the assignment if is SAT, 
 # otherwise certificate is empty
 # input: formula, output: True (sat), False (unsat)
-def exaustive_search(formula,certificate):
+def exaustive_search(formula,certificate=list()):
     if len(formula)==1:
         return True
     variables = set()

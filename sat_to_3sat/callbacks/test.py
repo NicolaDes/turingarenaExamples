@@ -21,6 +21,4 @@ def main():
         for x in c:
             if x not in variables_original and (-x) not in variables_original:
                 variables_original.add(abs(x))
-
-
 main()

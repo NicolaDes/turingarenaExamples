@@ -2,6 +2,7 @@ import core.solver
 import random
 
 
+# Generate unsat cnf from famous pigeonhole problem
 def pigeonhole(literals):
     formula = list()
     for i in range(1, literals+2):
@@ -16,17 +17,9 @@ def pigeonhole(literals):
     return formula
 
 
-def verify_cert(formula, certificate):
-    sat = True
-    for c in formula:
-        c_sat = False
-        for l in c:
-            if l in certificate:
-                c_sat = True
-        sat = sat & c_sat
-    return sat
-
-
+# Generate a random cnf sat and unsat with the following idea:
+# Continue to add clauses until the formula is unsat! So return that formula
+# less the last clause as sat and the complete formula as unsat.
 def generate_sat_unsat_random_formula(literals, max_c_size):
     sat_formula = list()
     unsat_formula = list()
@@ -39,10 +32,10 @@ def generate_sat_unsat_random_formula(literals, max_c_size):
     tmp = list()
 
     while sat:
-        c = set()
-        c_size = random.randint(4,max_c_size)
+        c = list()
+        c_size = random.randint(2,max_c_size)
         for l in range(1,c_size):
-            c.add(random.choice([1,-1])*random.choice(list(variables)))
+            c.append(random.choice([1,-1])*random.choice(list(variables)))
         last = c
         formula.append(c)
         sat = core.solver.exaustive_search(formula,tmp)

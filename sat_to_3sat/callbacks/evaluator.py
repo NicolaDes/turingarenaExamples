@@ -6,55 +6,73 @@ from turingarena import *
 
 import random
 
+variables_original = set()
+variables_requested = set()
 
-
+Correct = True
 
 def main():
-    nLiterals = 5
+    global variables_original
+    global Correct
+
+    nLiterals = 8
     nClauses = 10
 
     [formula_sat,formula_unsat] = core.generator.generate_sat_unsat_random_formula(nLiterals,nLiterals-1)
-
     certificate=list()
-    core.solver.exaustive_search(formula_sat, certificate)
+    core.solver.exaustive_search(formula_sat,certificate)
 
-    variables_original = set()
     for c in formula_sat:
         for x in c:
             if x not in variables_original and (-x) not in variables_original:
                 variables_original.add(abs(x))
 
-    i = 0
-    [submitted_formula,certificate_local] = compute(list(variables_original), formula_sat[i],certificate)
-    print(submitted_formula," | ",certificate_local)
+    task_ok = 1
+    tot = len(formula_sat)+len(formula_unsat)
+    for i in range(len(formula_sat)):
+        print(f"Computing {task_ok}/{tot} case")
+        [submitted_formula,certificate_local] = compute(formula_sat[i],certificate)
+        if not Correct:
+            print("La tua riduzione è sbagliata!")
+            return
+        task_ok=task_ok+1
+
+    for i in range(len(formula_unsat)):
+        print(f"Computing {task_ok}/{tot} case")
+        [submitted_formula,certificate_local] = compute(formula_unsat[i],certificate,False)
+        if not Correct:
+            print("La tua riduzione è sbagliata!")
+            return
+        task_ok=task_ok+1
 
 
-def compute(variables_original, formula, certificate):
+def compute(formula, certificate,sat=True):
+    global variables_original
+    global variables_requested
+    global Correct
     
-    print("original: ",formula)
-
     with run_algorithm(submission.source) as process:
-        formula_raw = list()
-        certificate_local = list()
-        variables_requested = set()
+        formula_new = list()
+        certificate_local = set()
 
         def requestVariable():
-            variables_requested.add(len(variables_original)+1+len(variables_requested))
-            return len(variables_original)+len(variables_requested)
+            new_var = len(variables_original)+1+len(variables_requested)
+            variables_requested.add(new_var)
+            return new_var
 
         def addClause():
-            nonlocal formula_raw
-            formula_raw.append(list())
+            nonlocal formula_new
+            formula_new.append(list())
 
         def addVariable(i):
-            nonlocal formula_raw
-            formula_raw[len(formula_raw)-1].append(i)
+            nonlocal formula_new
+            formula_new[len(formula_new)-1].append(i)
 
         process.procedures.reduceClause(len(variables_original), variables_original, len(formula), formula, callbacks=[requestVariable,addClause,addVariable])
 
         def addCertificateVariable(l):
             nonlocal certificate_local
-            certificate_local.append(l)
+            certificate_local.add(l)
 
         variableCertificate = []
         done = False
@@ -67,13 +85,14 @@ def compute(variables_original, formula, certificate):
             if done:
                 break
                     
-
         process.procedures.reduceCertificate(l,callbacks=[addCertificateVariable])
+        certificate_local.add(l)
+        print(f"{formula} -> {l}")
 
-        if not core.checker.local_check(formula,formula_raw,certificate,certificate_local,variables_requested):
+        if sat and  not core.checker.local_check(formula,formula_new,certificate,list(certificate_local),variables_original,variables_requested):
             print("System abort!!")
-            # return [False,False]
+            Correct = False
 
-        return [formula_raw,certificate_local]
+        return [formula_new,certificate_local]
 
 main()
