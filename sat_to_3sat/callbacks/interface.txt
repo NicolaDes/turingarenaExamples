@@ -1,11 +1,11 @@
-// nC = number of clauses
-// nL = number of literals
-// cnf[][] = sat formula
-// cnf3[][] = 3-sat formula (to fill)
-// certificate[][] = 3-sat certificate
-
-procedure reduce(sizeL,literals[],sizeC,clause[]) callbacks {
+procedure reduceClause(sizeL,literals[],sizeC,clause[]) callbacks {
+    function requestVariable();
+    procedure addClause();
     procedure addVariable(l);
+}
+
+procedure reduceCertificate(certificateLiteral) callbacks {
+    procedure addCertificateVariable(l);
 }
 
 main {
@@ -20,9 +20,23 @@ main {
     }
 
 
-    call reduce(sizeL,literals, sizeC, clause) callbacks {
+    call reduceClause(sizeL,literals, sizeC, clause) callbacks {
+        function requestVariable() {
+            read ans;
+            return ans;
+        }
+        procedure addClause() {
+
+        }
         procedure addVariable(l) {
             write l;
+        }
+    }
+
+    read certificateLiteral;
+    call reduceCertificate(certificateLiteral) callbacks {
+        procedure addCertificateVariable(l) {
+            write(l);
         }
     }
 }

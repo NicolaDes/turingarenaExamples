@@ -11,25 +11,30 @@ def isSat(formula, certificate):
     return sat
 
 
-def search(variables, assignment, formula):
+def search(variables, assignment, formula, certificate):
     global satisfiable
     if len(variables) == 0:
         if isSat(formula, assignment):
             satisfiable = True
+            certificate.append(assignment.copy())
         return
     x = variables.pop()
     assignment.append(x)
-    search(variables, assignment, formula)
+    search(variables, assignment, formula,certificate)
     assignment.remove(x)
     assignment.append(-x)
-    search(variables, assignment, formula)
+    search(variables, assignment, formula, certificate)
     variables.add(x)
     assignment.remove(-x)
 
 
 
+# Solve a cnf formula and fill a certificate list with the assignment if is SAT, 
+# otherwise certificate is empty
 # input: formula, output: True (sat), False (unsat)
-def exaustive_search(formula):
+def exaustive_search(formula,certificate):
+    if len(formula)==1:
+        return True
     variables = set()
     assignment = list()
     for c in formula:
@@ -39,6 +44,8 @@ def exaustive_search(formula):
     
     global satisfiable 
     satisfiable = False
-    search(variables,assignment,formula)
+    search(variables,assignment,formula,certificate)
+    if not satisfiable:
+        certificate.clear()
     return satisfiable
     
