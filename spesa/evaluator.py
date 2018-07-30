@@ -8,7 +8,7 @@ from turingarena import *
 Task = [True]*4
 
 
-def evaluate(algorithm):
+def evaluate():
 
     # Task 2
 
@@ -37,7 +37,7 @@ def evaluate(algorithm):
             for item in G.edges()
         ]
 
-        ret = compute(algorithm, N, M, K, supermercati, da, a)
+        ret = compute(N, M, K, supermercati, da, a)
         correct = solve(N, M, K, supermercati, da, a)
         if ret == correct:
             print(f"Task 2 -- > (correct)")
@@ -71,7 +71,7 @@ def evaluate(algorithm):
             item[1]
             for item in G.edges()
         ]
-        ret = compute(algorithm, N, M, K, supermercati, da, a)
+        ret = compute(N, M, K, supermercati, da, a)
         correct = solve(N, M, K, supermercati, da, a)
         if ret == correct:
             print(f"Task 3 -- > (correct)")
@@ -105,7 +105,7 @@ def evaluate(algorithm):
             item[1]
             for item in G.edges()
         ]
-        ret = compute(algorithm, N, M, K, supermercati, da, a)
+        ret = compute(N, M, K, supermercati, da, a)
         correct = solve(N, M, K, supermercati, da, a)
         if ret == correct:
             print(f"Task 4 -- > (correct)")
@@ -114,9 +114,13 @@ def evaluate(algorithm):
             Task[3] = False
 
 
-def compute(algorithm, N, M, K, supermercati, da, a):
-    with algorithm.run() as process:
-        return process.call.compra(N, M, K, supermercati, da, a)
+def compute(N, M, K, supermercati, da, a):
+    try:
+        with run_algorithm(submission.source) as process:
+            return process.functions.compra(N, M, K, supermercati, da, a)
+    except AlgorithmError as e:
+        print(e)
+        return -1
 
 
 def solve(N, M, K, supermercati, da, a):
@@ -158,8 +162,4 @@ def bfs(s, distance, edges):
                 queue.append(n)
                 distance[n] = distance[v]+1
 
-
-algorithm = submitted_algorithm()
-
-
-evaluate(algorithm)
+evaluate()

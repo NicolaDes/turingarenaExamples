@@ -1,34 +1,23 @@
-function compra(int N, int M, int K, int[] supermercati, int[] da, int[] a) -> int;
+function compra(N, M, K, supermercati[], da[], a[]);
 
 main {
-    var int N;
-    var int M;
-    var int K;
-    var int[] supermercati;
-    var int[] da;
-    var int[] a;
-
-    var int ans;
 
     read N;
     read M;
     read K;
 
-    alloc da, a : M;
-    alloc supermercati : K;
-
-    for(n : K)
+    for n to K
     {
         read supermercati[n];
     }
     
-    for(e : M)
+    for e to M
     {
         read da[e];
         read a[e];
     }
 
-    call compra(N,M,K,supermercati,da,a) -> ans;
+    call ans = compra(N,M,K,supermercati,da,a);
 
     write ans;
 }

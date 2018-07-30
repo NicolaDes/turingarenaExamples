@@ -9,7 +9,8 @@ Task = [False] * 4
 
 
 def generate_random_dag(n, m):
-    random_graph = nx.gnm_random_graph(n, m, directed=True) #gnp per probabilità arco 
+    random_graph = nx.gnm_random_graph(
+        n, m, directed=True)  # gnp per probabilità arco
     random_dag = nx.DiGraph(
         [
             (u, v) for (u, v) in random_graph.edges() if u < v
@@ -24,7 +25,7 @@ def generate_random_dag(n, m):
     return random_dag
 
 
-def evaluate(algorithm):
+def evaluate():
 
     # Task 2
     for i in range(0, 10):
@@ -49,13 +50,13 @@ def evaluate(algorithm):
             for item in G.edges()
         ]
 
-        ret = compute(algorithm, N, M, H, da, a)
+        ret = compute(N, M, H, da, a)
         correct = solve(N, M, H, da, a)
         if ret == correct:
             print(f"Task 2 -- > (correct)")
         else:
             print(f"Task 2 -- > {ret}!={correct}(wrong)")
-            Task[2]=False
+            Task[2] = False
 
     # Task 3
     for i in range(0, 5):
@@ -80,13 +81,13 @@ def evaluate(algorithm):
             for item in G.edges()
         ]
 
-        ret = compute(algorithm, N, M, H, da, a)
+        ret = compute(N, M, H, da, a)
         correct = solve(N, M, H, da, a)
         if ret == correct:
             print(f"Task 3 -- > (correct)")
         else:
             print(f"Task 3 -- > {ret}!={correct}(wrong)")
-            Task[3]=False
+            Task[3] = False
 
     # Task 4
     for i in range(0, 2):
@@ -111,23 +112,27 @@ def evaluate(algorithm):
             for item in G.edges()
         ]
 
-        ret = compute(algorithm, N, M, H, da, a)
+        ret = compute(N, M, H, da, a)
         correct = solve(N, M, H, da, a)
         if ret == correct:
             print(f"Task 4 -- > (correct)")
         else:
             print(f"Task 4 -- > {ret}!={correct}(wrong)")
-            Task[4]=False
+            Task[4] = False
 
 
-def compute(algorithm, N, M, H, da, a):
-    with algorithm.run() as process:
-        return process.call.pedala(N, M, H, da, a)
+def compute(N, M, H, da, a):
+    try:
+        with run_algorithm(submission.source) as process:
+            return process.functions.pedala(N, M, H, da, a)
+    except AlgorithmError as e:
+        print(e)
+        return -1
 
 
 def solve(N, M, H, da, a):
     g = defaultdict(list)
-    for i in range(0,M):
+    for i in range(0, M):
         g[da[i]].append((a[i]))
         g[a[i]].append((da[i]))
 
@@ -151,8 +156,4 @@ def dfs(curr, H, last, visited, adj):
     elif n in visited:
         return n
 
-
-algorithm = submitted_algorithm()
-
-
-evaluate(algorithm)
+evaluate()

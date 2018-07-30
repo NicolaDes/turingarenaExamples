@@ -8,13 +8,13 @@ from turingarena import *
 Task = [True]*4
 
 
-def evaluate(algorithm):
+def evaluate():
 
     # Task 2
 
     for i in range(0, 10):
         N = random.randint(2, 10)
-        M = random.randint(1, N*N) #metti 2n anzichè n^2
+        M = random.randint(1, N*N)  # metti 2n anzichè n^2
 
         G = nx.gnm_random_graph(N, M)
 
@@ -29,7 +29,7 @@ def evaluate(algorithm):
             for item in G.edges()
         ]
 
-        ret = compute(algorithm, N, M, conoscenzeA, conoscenzeB)
+        ret = compute(N, M, conoscenzeA, conoscenzeB)
         correct = solve(N, M, conoscenzeA, conoscenzeB)
         if ret == correct:
             print(f"Task 2 -- > (correct)")
@@ -56,7 +56,7 @@ def evaluate(algorithm):
             for item in G.edges()
         ]
 
-        ret = compute(algorithm, N, M, conoscenzeA, conoscenzeB)
+        ret = compute(N, M, conoscenzeA, conoscenzeB)
         correct = solve(N, M, conoscenzeA, conoscenzeB)
         if ret == correct:
             print(f"Task 3 -- > (correct)")
@@ -64,14 +64,13 @@ def evaluate(algorithm):
             print(f"Task 3 -- > {ret}!={correct}(wrong)")
             Task[3] = False
 
-    
     # Task 4
-    
-    for i in range(0,1):
-        N = random.randint(2,10000)
-        M = random.randint(1,100000)
 
-        G = nx.gnm_random_graph(N,M)
+    for i in range(0, 1):
+        N = random.randint(2, 10000)
+        M = random.randint(1, 100000)
+
+        G = nx.gnm_random_graph(N, M)
 
         M = len(G.edges())
 
@@ -84,19 +83,22 @@ def evaluate(algorithm):
             for item in G.edges()
         ]
 
-        ret = compute(algorithm,N,M,conoscenzeA,conoscenzeB)
-        correct = solve(N,M,conoscenzeA,conoscenzeB)
+        ret = compute(algorithm, N, M, conoscenzeA, conoscenzeB)
+        correct = solve(N, M, conoscenzeA, conoscenzeB)
         if ret == correct:
             print(f"Task 4 -- > (correct)")
         else:
             print(f"Task 4-- > {ret}!={correct}(wrong)")
-            Task[4]=False
+            Task[4] = False
 
 
-
-def compute(algorithm, N, M, conoscenzeA, conoscenzeB):
-    with algorithm.run() as process:
-        return process.call.invita(N, M, conoscenzeA, conoscenzeB)
+def compute(N, M, conoscenzeA, conoscenzeB):
+    try:
+        with run_algorithm(submission.source) as process:
+            return process.functions.invita(N, M, conoscenzeA, conoscenzeB)
+    except AlgorithmError as e:
+        print(e)
+        return -1
 
 
 def solve(N, M, conoscenzeA, conoscenzeB):
@@ -128,8 +130,4 @@ def eatBorders(s, degree, adj, N):
         if degree[i] == 1:
             eatBorders(i, degree, adj, N)
 
-
-algorithm = submitted_algorithm()
-
-
-evaluate(algorithm)
+evaluate()

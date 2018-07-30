@@ -19,7 +19,7 @@ def generate_unbalanced_tree(source, C, N):
             choosen.add(i)
 
 
-def evaluate(algorithm):
+def evaluate():
 
     # Task 2
 
@@ -29,7 +29,7 @@ def evaluate(algorithm):
         C = [-1]*N
         generate_unbalanced_tree(direttore, C, N)
 
-        request = compute(algorithm,N,C)
+        request = compute(N,C)
         correct = solve(N, C, direttore)
         if request == correct:
             print(f"Task 2 -- > (correct)")
@@ -45,7 +45,7 @@ def evaluate(algorithm):
         C = [-1]*N
         generate_unbalanced_tree(direttore, C, N)
 
-        request = compute(algorithm,N,C)
+        request = compute(N,C)
         correct = solve(N, C, direttore)
         if request == correct:
             print(f"Task 3 -- > (correct)")
@@ -61,7 +61,7 @@ def evaluate(algorithm):
         C = [-1]*N
         generate_unbalanced_tree(direttore, C, N)
 
-        request = compute(algorithm,N,C)
+        request = compute(N,C)
         correct = solve(N, C, direttore)
         if request == correct:
             print(f"Task 4 -- > (correct)")
@@ -70,9 +70,13 @@ def evaluate(algorithm):
             Task[4]=False
 
 
-def compute(algorithm, N, C):
-    with algorithm.run() as process:
-        return process.call.coppie(N, C)
+def compute( N, C):
+    try:
+        with run_algorithm(submission.source) as process:
+            return process.functions.coppie(N, C)
+    except AlgorithmError as e:
+        print(e)
+        return -1
 
 
 def solve(N, C, direttore):
@@ -96,7 +100,4 @@ def dfs(s, e, cumulate, adj):
         dfs(u, s, cumulate, adj)
 
 
-algorithm = submitted_algorithm()
-
-
-evaluate(algorithm)
+evaluate()

@@ -1,17 +1,13 @@
-function pausa(int N, int[] A, int[] B) -> int;
+function pausa(N, A[], B[]);
 
 main {
-    var int N;
-    var int ans;
     read N;
-    var int[] A;
-    var int[] B;
-    alloc A,B : N;
-    for(u : N)
+
+    for u to N
     {
         read A[u];
         read B[u];
     }
-    call pausa(N,A,B) -> ans;
+    call ans = pausa(N,A,B);
     write ans;
 }

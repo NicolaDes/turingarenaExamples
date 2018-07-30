@@ -1,25 +1,16 @@
-function invita(int N, int M, int[] conoscenzeA, int[] conoscenzeB) -> int;
+function invita(N,M, conoscenzeA[], conoscenzeB[]);
 
 main {
-    var int N;
-    var int M;
-    var int[] conoscenzeA;
-    var int[] conoscenzeB;
-
-    var int ans;
-
     read N;
     read M;
 
-    alloc conoscenzeA, conoscenzeB : M;
-    
-    for(e : M)
+    for e to M
     {
         read conoscenzeA[e];
         read conoscenzeB[e];
     }
 
-    call invita(N,M,conoscenzeA,conoscenzeB) -> ans;
+    call ans = invita(N,M,conoscenzeA,conoscenzeB);
 
     write ans;
 }

@@ -4,7 +4,8 @@ from turingarena import *
 
 Task = [False]*4
 
-def evaluate(algorithm):
+
+def evaluate():
     # Task 2
     for _ in range(1, 10):
         N = random.randint(2, 10)
@@ -16,11 +17,11 @@ def evaluate(algorithm):
             random.randint(A[_], N)
             for _ in range(0, N)
         ]
-        ret = compute(algorithm, N, A, B)
-        correct = solve(N,A,B)
+        ret = compute(N, A, B)
+        correct = solve(N, A, B)
         if ret == correct:
             print(f"Task 2 -- > (correct)")
-            Task[2]=True
+            Task[2] = True
         else:
             print(f"Task 2 -- > {ret}!={correct}(wrong)")
 
@@ -35,11 +36,11 @@ def evaluate(algorithm):
             random.randint(A[_], N)
             for _ in range(0, N)
         ]
-        ret = compute(algorithm, N, A, B)
-        correct = solve(N,A,B)
+        ret = compute(N, A, B)
+        correct = solve(N, A, B)
         if ret == correct:
             print(f"Task 3 -- > (correct)")
-            Task[2]=True
+            Task[2] = True
         else:
             print(f"Task 3 -- > {ret}!={correct}(wrong)")
 
@@ -54,18 +55,22 @@ def evaluate(algorithm):
             random.randint(A[_], N)
             for _ in range(0, N)
         ]
-        ret = compute(algorithm, N, A, B)
-        correct = solve(N,A,B)
+        ret = compute(N, A, B)
+        correct = solve(N, A, B)
         if ret == correct:
             print(f"Task 4 -- > (correct)")
-            Task[2]=True
+            Task[2] = True
         else:
             print(f"Task 4 -- > {ret}!={correct}(wrong)")
-    
 
-def compute(algorithm, N, A, B):
-    with algorithm.run() as process:
-        return process.call.pausa(N, A, B)
+
+def compute(N, A, B):
+    try:
+        with run_algorithm(submission.source) as process:
+            return process.functions.pausa(N, A, B)
+    except AlgorithmError as e:
+        print(e)
+        return -1
 
 
 def solve(N, A, B):
@@ -88,8 +93,4 @@ def solve(N, A, B):
     return caffe
 
 
-algorithm = submitted_algorithm()
-
-
-evaluate(algorithm)
-
+evaluate()
