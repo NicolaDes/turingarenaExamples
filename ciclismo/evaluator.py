@@ -27,6 +27,8 @@ def generate_random_dag(n, m):
 
 def evaluate():
 
+    Task[1]=True
+
     # Task 2
     for i in range(0, 10):
         N = random.randint(2, 10)
@@ -157,3 +159,5 @@ def dfs(curr, H, last, visited, adj):
         return n
 
 evaluate()
+
+evaluation.data(dict(goals=dict(Tasks=Task)))

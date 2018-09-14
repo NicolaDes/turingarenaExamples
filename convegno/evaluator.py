@@ -101,3 +101,5 @@ def dfs(s, e, cumulate, adj):
 
 
 evaluate()
+
+evaluation.data(dict(goals=dict(Tasks=Task)))

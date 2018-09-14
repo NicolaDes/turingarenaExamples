@@ -125,3 +125,5 @@ def compute(formula, certificate, sat=True):
 
 
 main()
+
+evaluation.data(dict(goals=dict(Correct=Correct)))

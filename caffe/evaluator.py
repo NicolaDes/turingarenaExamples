@@ -6,6 +6,7 @@ Task = [False]*4
 
 
 def evaluate():
+    Task[0] = True
     # Task 2
     for _ in range(1, 10):
         N = random.randint(2, 10)
@@ -21,7 +22,7 @@ def evaluate():
         correct = solve(N, A, B)
         if ret == correct:
             print(f"Task 2 -- > (correct)")
-            Task[2] = True
+            Task[1] = True
         else:
             print(f"Task 2 -- > {ret}!={correct}(wrong)")
 
@@ -59,7 +60,7 @@ def evaluate():
         correct = solve(N, A, B)
         if ret == correct:
             print(f"Task 4 -- > (correct)")
-            Task[2] = True
+            Task[3] = True
         else:
             print(f"Task 4 -- > {ret}!={correct}(wrong)")
 
@@ -94,3 +95,5 @@ def solve(N, A, B):
 
 
 evaluate()
+
+evaluation.data(dict(goals=dict(Tasks=Task)))

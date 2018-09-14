@@ -10,6 +10,8 @@ Task = [True]*4
 
 def evaluate():
 
+    Task[1] = True
+
     # Task 2
 
     for i in range(0, 10):
@@ -130,4 +132,7 @@ def eatBorders(s, degree, adj, N):
         if degree[i] == 1:
             eatBorders(i, degree, adj, N)
 
+
 evaluate()
+
+evaluation.data(dict(goals=dict(Tasks=Task)))

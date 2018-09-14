@@ -10,6 +10,8 @@ Task = [True]*4
 
 def evaluate():
 
+    Task[1] = True
+
     # Task 2
 
     for i in range(0, 10):
@@ -22,10 +24,11 @@ def evaluate():
             i
             for i in range(0, N)
         ]
-        random.shuffle(random_list) # random.sample(range(N),K)
+        random.shuffle(random_list)  # random.sample(range(N),K)
         # Graph generation
         supermercati = random_list[0:K]
-        G = nx.gnm_random_graph(N+1, M) #gnp, (unione tra albero e grafo generato networkx)
+        # gnp, (unione tra albero e grafo generato networkx)
+        G = nx.gnm_random_graph(N+1, M)
 
         M = len(G.edges())
         da = [
@@ -44,12 +47,12 @@ def evaluate():
         else:
             print(f"Task 2 -- > {ret}!={correct}(wrong)")
             Task[2] = False
-    
+
     # Task 3
 
     for i in range(0, 1):
         N = random.randint(3, 10000)
-        M = random.randint(N-1,100000)
+        M = random.randint(N-1, 100000)
         K = random.randint(1, 10)
         assert(K >= 1)
 
@@ -83,7 +86,7 @@ def evaluate():
 
     for i in range(0, 1):
         N = random.randint(3, 10000)
-        M = random.randint(N-1,100000)
+        M = random.randint(N-1, 100000)
         K = random.randint(1, N-2)
         assert(K >= 1)
 
@@ -111,7 +114,7 @@ def evaluate():
             print(f"Task 4 -- > (correct)")
         else:
             print(f"Task 4 -- > {ret}!={correct}(wrong)")
-            Task[3] = False
+            Task[4] = False
 
 
 def compute(N, M, K, supermercati, da, a):
@@ -162,4 +165,7 @@ def bfs(s, distance, edges):
                 queue.append(n)
                 distance[n] = distance[v]+1
 
+
 evaluate()
+
+evaluation.data(dict(goals=dict(Tasks=Task)))
