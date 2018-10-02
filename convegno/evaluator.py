@@ -62,13 +62,13 @@ def main():
     goals = {
         "exponential": True,
         "quadratic": True,
-        "n_log_n": True,
+        "V+E": True,
     }
 
     for gs, ns in [
-        (["exponential", "quadratic", "n_log_n"], [200] * 3),
-        (["quadratic", "n_log_n"], [5000]),
-        (["n_log_n"], [10000]),
+        (["exponential", "quadratic", "V+E"], [200] * 3),
+        (["quadratic", "V+E"], [5000]),
+        (["V+E"], [10000]),
     ]:
         for n in ns:
             if not any(goals[g] for g in gs):

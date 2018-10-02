@@ -53,9 +53,9 @@ def main():
     }
 
     for gs, ns in [
-        (["exponential", "quadratic", "n_log_n"], [100] * 3),
-        (["quadratic", "n_log_n"], [1000]),
-        (["n_log_n"], [10000]),
+        (["exponential", "quadratic", "linear"], [100] * 3),
+        (["quadratic", "linear"], [1000]),
+        (["linear"], [10000]),
     ]:
         for n in ns:
             if not any(goals[g] for g in gs):
