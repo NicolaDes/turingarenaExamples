@@ -5,105 +5,36 @@ import networkx as nx
 
 from turingarena import *
 
-Task = [True]*4
 
+def create_random_instance(n):
+    N = random.randint(2, n)
+    M = random.randint(1, 4*N)
+    G = nx.gnm_random_graph(N, M)
 
-def evaluate():
+    M = len(G.edges())
 
-    Task[1] = True
+    conoscenzeA = [
+        item[0]
+        for item in G.edges()
+    ]
+    conoscenzeB = [
+        item[1]
+        for item in G.edges()
+    ]
 
-    # Task 2
+    return [N,M,conoscenzeA, conoscenzeB]
 
-    for i in range(0, 10):
-        N = random.randint(2, 10)
-        M = random.randint(1, N*N)  # metti 2n anzichè n^2
+def run(algorithm, N, M, conoscenzeA, conoscenzeB):
+    with run_algorithm(submission.source) as process:
+        ret= process.functions.invita(N, M, conoscenzeA, conoscenzeB)
+    print(f"Time usage: {process.time_usage}")
+    return ret
 
-        G = nx.gnm_random_graph(N, M)
+def get_opt_cpp(N,M,conoscenzeA, conoscenzeB):
+    corretc_algo = os.environ["PWD"]+"/solutions/correct.cpp"
+    return run(corretc_algo, N,M,conoscenzeA,conoscenzeB)
 
-        M = len(G.edges())
-
-        conoscenzeA = [
-            item[0]
-            for item in G.edges()
-        ]
-        conoscenzeB = [
-            item[1]
-            for item in G.edges()
-        ]
-
-        ret = compute(N, M, conoscenzeA, conoscenzeB)
-        correct = solve(N, M, conoscenzeA, conoscenzeB)
-        if ret == correct:
-            print(f"Task 2 -- > (correct)")
-        else:
-            print(f"Task 2 -- > {ret}!={correct}(wrong)")
-            Task[2] = False
-
-    # Task 3
-
-    for i in range(0, 2):
-        N = random.randint(2, 1000)
-        M = random.randint(1, 100000)
-
-        G = nx.gnm_random_graph(N, M)
-
-        M = len(G.edges())
-
-        conoscenzeA = [
-            item[0]
-            for item in G.edges()
-        ]
-        conoscenzeB = [
-            item[1]
-            for item in G.edges()
-        ]
-
-        ret = compute(N, M, conoscenzeA, conoscenzeB)
-        correct = solve(N, M, conoscenzeA, conoscenzeB)
-        if ret == correct:
-            print(f"Task 3 -- > (correct)")
-        else:
-            print(f"Task 3 -- > {ret}!={correct}(wrong)")
-            Task[3] = False
-
-    # Task 4
-
-    for i in range(0, 1):
-        N = random.randint(2, 10000)
-        M = random.randint(1, 100000)
-
-        G = nx.gnm_random_graph(N, M)
-
-        M = len(G.edges())
-
-        conoscenzeA = [
-            item[0]
-            for item in G.edges()
-        ]
-        conoscenzeB = [
-            item[1]
-            for item in G.edges()
-        ]
-
-        ret = compute(algorithm, N, M, conoscenzeA, conoscenzeB)
-        correct = solve(N, M, conoscenzeA, conoscenzeB)
-        if ret == correct:
-            print(f"Task 4 -- > (correct)")
-        else:
-            print(f"Task 4-- > {ret}!={correct}(wrong)")
-            Task[4] = False
-
-
-def compute(N, M, conoscenzeA, conoscenzeB):
-    try:
-        with run_algorithm(submission.source) as process:
-            return process.functions.invita(N, M, conoscenzeA, conoscenzeB)
-    except AlgorithmError as e:
-        print(e)
-        return -1
-
-
-def solve(N, M, conoscenzeA, conoscenzeB):
+def get_opt(N, M, conoscenzeA, conoscenzeB):
     degree = [0]*(N)
     g = defaultdict(list)
     for i in range(0, M):
@@ -132,7 +63,44 @@ def eatBorders(s, degree, adj, N):
         if degree[i] == 1:
             eatBorders(i, degree, adj, N)
 
+def main():
+    algorithm = submission.source
+    goals = {
+        "exponential": True,
+        "quadratic": True,
+        "n_log_n": True,
+    }
 
-evaluate()
+    for gs, ns in [
+        (["exponential", "quadratic", "n_log_n"], [10] * 3),
+        (["quadratic", "n_log_n"], [1000]),
+        (["n_log_n"], [10000]),
+    ]:
+        for n in ns:
+            if not any(goals[g] for g in gs):
+                break
 
-evaluation.data(dict(goals=dict(Tasks=Task)))
+            print(f"Testing n={n}")
+            [N, M, conoscenzeA, conoscenzeB] = create_random_instance(n)
+            opt = get_opt_cpp(N, M, conoscenzeA, conoscenzeB)
+            try:
+                submitted = run(algorithm, N, M, conoscenzeA, conoscenzeB)
+            except AlgorithmError as e:
+                print("Error:", e)
+                correct = False
+            else:
+                print("Your solution:", submitted)
+                print("Optimal solution:", opt)
+                correct = (
+                    opt == submitted
+                )
+                print("Correct:", correct)
+            if not correct:
+                for g in gs:
+                    goals[g] = False
+            print("------------------")
+    evaluation.data(dict(goals=goals))
+
+
+if __name__ == "__main__":
+    main()
