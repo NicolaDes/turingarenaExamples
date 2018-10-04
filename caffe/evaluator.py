@@ -22,7 +22,7 @@ def main():
     for gs, ns in [
         (["exponential"], [10] * 3 ),
         (["quadratic"], [1000] * 2),
-        (["linear"], [40000]),
+        (["linear"], [4000]),
     ]:
         print(f"Verifying {gs[0]}\n")
         for n in ns:
